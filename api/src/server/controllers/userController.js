@@ -18,10 +18,12 @@ const createUser = async (req, res) => {
 
   try {
     const connection = await connectToDatabase();
+
     await connection.execute("INSERT INTO users (name, email) VALUES (?, ?)", [
       name,
       email,
     ]);
+
     res.json({ message: "User Created" });
     await connection.end();
   } catch (error) {
