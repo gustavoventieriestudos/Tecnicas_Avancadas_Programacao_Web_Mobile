@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import { connection } from "../config/connection";
+import { connection } from "../config/connection.js";
 
-const User = connection.define(
+export const User = connection.define(
   "User",
   {
     nome: {
@@ -38,9 +38,7 @@ const User = connection.define(
     },
   },
   {
-    tableName: "users",
+    tableName: "User",
     timestamps: false,
   }
 );
-
-export { User };
