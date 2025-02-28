@@ -1,19 +1,14 @@
-import mysql from "mysql2/promise";
+import { connection } from "./config/connection.js";
 
-const connectToDatabase = async () => {
-  try {
-    const connection = await mysql.createConnection({
-      host: process.env.DATABASE_HOST,
-      user: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASS,
-      database: process.env.DATABASE_NOME,
-    });
-    console.log("Conectado com sucesso ao Banco de Dados!");
-    return connection;
-  } catch (error) {
-    console.error("Erro ao conectar com o Banco de Dados:", error);
-    throw error;
-  }
+export const startDatabase = async () => {
+  await connection
+    .authenticate()
+    .then(
+      async () =>
+        await connection
+          .sync({ force: true })
+          .then(() => console.log("Database successfully synchronized!"))
+          .catch((error) => console.log("Failed Connection: ", error))
+    )
+    .catch((error) => console.log("Failed Connection: ", error));
 };
-
-export { connectToDatabase };
