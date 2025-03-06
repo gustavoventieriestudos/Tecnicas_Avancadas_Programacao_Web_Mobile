@@ -3,10 +3,6 @@ import { UserController } from "../controllers/userController.js";
 
 const routes = Router();
 
-routes.get("/", (req, res) => {
-  res.render("index");
-});
-
 // Rota para listar todos os usuários
 routes.get("/user/get/all", UserController.getAll);
 
