@@ -3,9 +3,28 @@ import { User } from "../database/models/User.js";
 const getAll = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.status(200).json(users);
+    res.render("user/list", { users: users });
   } catch (error) {
     res.status(500).json({ error: "Error fetching users" });
+  }
+};
+
+const renderizeCreatePage = (req, res) => {
+  res.render("user/create");
+};
+
+const renderizeUpdatePage = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) {
+      const users = await User.findAll();
+      res.render("user/list", { users: users });
+    }
+    res.render("user/update", { user: user[0] });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar usuário", error: error.message });
   }
 };
 
@@ -23,18 +42,27 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { nome, email, telefone, cpf, data, hora } = req.body;
-    const newUser = await User.create({
-      nome,
+    const { name, email, password } = req.body;
+
+    // Validação para garantir que 'nome', 'email' e 'password' não são nulos ou vazios
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .json({ error: "Nome, email e password são obrigatórios!" });
+    }
+
+    // Criação do usuário
+    await User.create({
+      name,
       email,
-      telefone,
-      cpf,
-      data,
-      hora,
+      password,
     });
-    res.status(201).json(newUser);
+
+    // Obter a lista de todos os usuários e renderizar a página
+    const users = await User.findAll();
+    res.status(201).render("user/list", { users: users });
   } catch (error) {
-    res.status(500).json({ error: "Error creating user" });
+    res.status(500).json({ error: `Error creating user: ${error}` });
   }
 };
 
@@ -45,7 +73,9 @@ const updateById = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     await user.update(req.body);
-    res.status(200).json(user);
+
+    const users = await User.findAll();
+    res.status(201).render("user/list", { users: users });
   } catch (error) {
     res.status(500).json({ error: "Error updating user" });
   }
@@ -58,7 +88,9 @@ const deleteById = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     await user.destroy();
-    res.status(204).send();
+
+    const users = await User.findAll();
+    res.status(201).render("user/list", { users: users });
   } catch (error) {
     res.status(500).json({ error: "Error deleting user" });
   }
@@ -70,4 +102,6 @@ export const UserController = {
   create,
   updateById,
   deleteById,
+  renderizeCreatePage,
+  renderizeUpdatePage,
 };

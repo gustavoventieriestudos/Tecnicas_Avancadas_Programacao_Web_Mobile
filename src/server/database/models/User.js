@@ -4,7 +4,7 @@ import { connection } from "../config/connection.js";
 export const User = connection.define(
   "User",
   {
-    nome: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -16,24 +16,8 @@ export const User = connection.define(
         isEmail: true,
       },
     },
-    telefone: {
+    password: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    cpf: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        len: [11, 11],
-      },
-    },
-    data: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    hora: {
-      type: DataTypes.TIME,
       allowNull: false,
     },
   },
