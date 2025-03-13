@@ -3,7 +3,10 @@ import { User } from "../database/models/User.js";
 const getAll = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.render("user/list", { users: users });
+
+    const usersMapped = users.map((user) => user.dataValues);
+
+    res.render("user/list", { users: usersMapped });
   } catch (error) {
     res.status(500).json({ error: "Error fetching users" });
   }
@@ -16,11 +19,13 @@ const renderizeCreatePage = (req, res) => {
 const renderizeUpdatePage = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
+    
     if (!user) {
-      const users = await User.findAll();
-      res.render("user/list", { users: users });
+      res.redirect("/user/get/all");
+      
     }
-    res.render("user/update", { user: user[0] });
+   
+    res.render("user/update", { user: user.dataValues });
   } catch (error) {
     res
       .status(500)
@@ -59,8 +64,8 @@ const create = async (req, res) => {
     });
 
     // Obter a lista de todos os usuários e renderizar a página
-    const users = await User.findAll();
-    res.status(201).render("user/list", { users: users });
+
+    res.redirect("/user/get/all");
   } catch (error) {
     res.status(500).json({ error: `Error creating user: ${error}` });
   }

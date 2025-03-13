@@ -7,6 +7,7 @@ routes.get("/", (req, res) => {
   res.render("index");
 });
 
+
 routes.get("/user/create/page", UserController.renderizeCreatePage);
 
 routes.get("/user/update/:id", UserController.renderizeUpdatePage);
