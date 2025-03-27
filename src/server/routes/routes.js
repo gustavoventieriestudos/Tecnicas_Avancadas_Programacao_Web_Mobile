@@ -4,15 +4,17 @@ import { AuthController } from "../controllers/authController.js";
 
 const routes = Router();
 
-routes.get("/", (req, res) => {
-  res.render("index");
-});
 
 // Auth Routes
 routes.post("/register", AuthController.SignUp);
 routes.post("/login", AuthController.SignIn);
-routes.get("/login", AuthController.LoginPage);
+routes.get("/", AuthController.LoginPage);
 routes.get("/register", AuthController.RegisterPage);
+
+
+routes.get("/home", (req, res) => {
+  res.render("index");
+});
 
 // User Routes
 routes.get("/user/create/page", UserController.renderizeCreatePage);

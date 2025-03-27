@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import { User } from "../database/models/User.js";
 
-const LoginPage = (res, req) => {
-  res.render("/auth/register");
+const LoginPage = (req, res) => {
+  res.render("auth/login");
 };
 
 const RegisterPage = (req, res) => {
-  res.render("/auth/register");
+  res.render("auth/register");
 };
 
 const SignUp = async (req, res) => {
@@ -42,7 +42,7 @@ const SignUp = async (req, res) => {
 
     // Redirecionar para a página de login ou outro caminho após sucesso
     // Redirecionar para a página de login após o cadastro
-    res.render("index");
+    res.redirect("/user/get/all");
   } catch (error) {
     res.status(500).json({ error: `Erro ao criar usuário: ${error.message}` });
   }
@@ -73,7 +73,7 @@ const SignIn = async (req, res) => {
     }
 
     // Login bem-sucedido, redirecionar para a página de home ou outra res.redirect("/home"); // Redirecionar para a página inicial ou outra página após o login
-    res.render("index");
+    res.redirect("/user/get/all");
   } catch (error) {
     res.status(500).json({ error: `Erro ao fazer login: ${error.message}` });
   }

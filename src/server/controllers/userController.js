@@ -79,8 +79,7 @@ const updateById = async (req, res) => {
     }
     await user.update(req.body);
 
-    const users = await User.findAll();
-    res.status(201).render("user/list", { users: users });
+    res.redirect("/user/get/all");
   } catch (error) {
     res.status(500).json({ error: "Error updating user" });
   }
@@ -94,8 +93,7 @@ const deleteById = async (req, res) => {
     }
     await user.destroy();
 
-    const users = await User.findAll();
-    res.status(201).render("user/list", { users: users });
+    res.redirect("/user/get/all");
   } catch (error) {
     res.status(500).json({ error: "Error deleting user" });
   }
