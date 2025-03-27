@@ -85,6 +85,7 @@ const updateById = async (req, res) => {
   }
 };
 
+
 const deleteById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);

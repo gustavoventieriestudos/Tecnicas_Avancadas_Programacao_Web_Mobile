@@ -61,7 +61,7 @@
       body: JSON.stringify(formData)
     });
 
-    if (response.ok) {
+    if (response.redirected) {
       alert('Usuário atualizado com sucesso!');
       window.location.href = '/user/get/all'; // Redireciona para a lista de usuários
     } else {
